@@ -19,6 +19,12 @@ class ItemFragment: Fragment() {
     private lateinit var collectionImageView: ImageView
     private var collection: Collection? = null
 
+    interface ClickListener {
+        fun onPreviewCollection(collectionId: Int)
+    }
+
+    private var listener: ClickListener? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +50,12 @@ class ItemFragment: Fragment() {
         descriptionTextView.text = collection?.description
         val imageURL = collection?.coverPhoto?.urls?.small
         Picasso.get().load(imageURL).into(collectionImageView)
+
+        collectionImageView.setOnClickListener(View.OnClickListener {
+            if (listener != null) {
+                listener!!.onPreviewCollection(collection!!.id)
+            }
+        })
     }
 
 
